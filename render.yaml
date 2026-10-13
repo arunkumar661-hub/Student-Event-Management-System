@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: student-event-management-system
+    env: docker
+    plan: free
+    dockerfilePath: Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: DB_HOST
+        value: localhost
+      - key: DB_PORT
+        value: 3306
+      - key: DB_NAME
+        value: student_event_db
+      - key: DB_USER
+        value: root
+      - key: DB_PASSWORD
+        value: root

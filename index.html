@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student Event-Management System - Manage students, event participations, and prize achievements seamlessly.">
+  <title>Student Event-Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-header">
+        <div class="brand-logo">🎓</div>
+        <div class="brand-title">
+          <h2>CampusEvent</h2>
+          <p>Management System</p>
+        </div>
+      </div>
+
+      <ul class="nav-menu">
+        <li class="nav-item active">
+          <a href="#" data-view="dashboard-view">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" data-view="students-view">
+            <span class="nav-icon">👨‍🎓</span>
+            <span>Student Details</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" data-view="events-view">
+            <span class="nav-icon">🏆</span>
+            <span>Event Details</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" data-view="about-view">
+            <span class="nav-icon">ℹ️</span>
+            <span>About</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" data-view="contact-view">
+            <span class="nav-icon">📞</span>
+            <span>Contact</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <p>Java + JDBC + MySQL Edition</p>
+        <small>© 2026 Student Event System</small>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="header-bar">
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">☰</button>
+          <div class="header-title">
+            <h1 id="pageTitle">Dashboard Overview</h1>
+          </div>
+        </div>
+
+        <div class="user-profile">
+          <div class="badge-status" id="dbBackendBadge">
+            <span class="status-dot"></span> System Ready
+          </div>
+          <div class="avatar" title="System Administrator">SA</div>
+        </div>
+      </header>
+
+      <!-- Page Views Container -->
+      <div class="page-container">
+
+        <!-- VIEW 1: DASHBOARD -->
+        <section id="dashboard-view" class="view-section active">
+          <div class="section-header">
+            <h2 class="section-title">System Metrics</h2>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-info">
+                <h3 id="statTotalStudents">0</h3>
+                <p>Total Students</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">🎯</div>
+              <div class="stat-info">
+                <h3 id="statTotalEvents">0</h3>
+                <p>Total Events</p>
+              </div>
+            </div>
+
+            <div class="stat-card gold">
+              <div class="stat-icon">🥇</div>
+              <div class="stat-info">
+                <h3 id="statFirstPrize">0</h3>
+                <p>1st Prize Count</p>
+              </div>
+            </div>
+
+            <div class="stat-card silver">
+              <div class="stat-icon">🥈</div>
+              <div class="stat-info">
+                <h3 id="statSecondPrize">0</h3>
+                <p>2nd Prize Count</p>
+              </div>
+            </div>
+
+            <div class="stat-card bronze">
+              <div class="stat-icon">🥉</div>
+              <div class="stat-info">
+                <h3 id="statThirdPrize">0</h3>
+                <p>3rd Prize Count</p>
+              </div>
+            </div>
+
+            <div class="stat-card participation">
+              <div class="stat-icon">📜</div>
+              <div class="stat-info">
+                <h3 id="statParticipation">0</h3>
+                <p>Participation Count</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Overview Card -->
+          <div class="info-grid" style="margin-top: 1.5rem;">
+            <div class="info-card">
+              <h3>⚡ Quick Navigation</h3>
+              <p>Manage student records or register new event participation and prize achievements using the sidebar modules.</p>
+              <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem;">
+                <button class="btn-primary" onclick="document.querySelector('[data-view=students-view]').click()">Go to Student Details</button>
+                <button class="btn-secondary" onclick="document.querySelector('[data-view=events-view]').click()">Go to Event Details</button>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h3>🛡️ Database Validation Specs</h3>
+              <ul class="feature-list">
+                <li>Register Number uniqueness validation</li>
+                <li>Strict Email format validation</li>
+                <li>Phone number exactly 10 numeric digits</li>
+                <li>Prize options: 1st Prize, 2nd Prize, 3rd Prize, Participation</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: STUDENT DETAILS MODULE -->
+        <section id="students-view" class="view-section">
+          <div class="table-controls">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="searchStudentInput" placeholder="Search by Register Number, Name or Email...">
+            </div>
+            <button class="btn-primary" onclick="openAddStudentModal()">
+              <span>➕</span> Add Student
+            </button>
+          </div>
+
+          <div class="table-card">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Student Name</th>
+                  <th>Register Number</th>
+                  <th>Phone Number</th>
+                  <th>Email Address</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTableBody">
+                <!-- Rendered dynamically via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- VIEW 3: EVENT DETAILS MODULE -->
+        <section id="events-view" class="view-section">
+          <div class="table-controls">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="searchEventInput" placeholder="Search by Event Name, Student Name, Reg Number...">
+            </div>
+            <button class="btn-primary" onclick="openAddEventModal()">
+              <span>🏆</span> Add Event Record
+            </button>
+          </div>
+
+          <div class="table-card">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Event Name</th>
+                  <th>Student Name</th>
+                  <th>Register Number</th>
+                  <th>Date</th>
+                  <th>Place</th>
+                  <th>Prize Won</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="eventsTableBody">
+                <!-- Rendered dynamically via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- VIEW 4: ABOUT -->
+        <section id="about-view" class="view-section">
+          <div class="info-grid">
+            <div class="info-card">
+              <h3>ℹ️ About Student Event-Management System</h3>
+              <p>The Student Event-Management System is an integrated web platform designed to streamline student registration, track campus/inter-college event participation, and archive prize achievements.</p>
+              <p>It connects front-end HTML5/CSS3/Vanilla JS views with a robust Java Collections, JDBC, and MySQL database layer for permanent data storage.</p>
+            </div>
+
+            <div class="info-card">
+              <h3>💻 Technology Stack</h3>
+              <ul class="feature-list">
+                <li><strong>HTML5 & CSS3:</strong> Responsive academic design system</li>
+                <li><strong>Vanilla JavaScript:</strong> Client-side dynamic state & validations</li>
+                <li><strong>Java SE:</strong> OOP, Collections (ArrayList), DAO Architecture</li>
+                <li><strong>JDBC:</strong> MySQL database connection & CRUD operations</li>
+                <li><strong>MySQL Database:</strong> Relational data tables with foreign keys</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 5: CONTACT -->
+        <section id="contact-view" class="view-section">
+          <div class="info-grid">
+            <div class="info-card">
+              <h3>📬 Support & Inquiries</h3>
+              <p>For system inquiries or administrative support, please contact the campus event committee.</p>
+              <ul class="feature-list" style="margin-bottom: 1.5rem;">
+                <li>📍 <strong>Office:</strong> Student Affairs Block, Room 204</li>
+                <li>📧 <strong>Email:</strong> manojspersinal0311@gmail.com</li>
+                <li>📞 <strong>Phone:</strong> +91 9025442931</li>
+              </ul>
+            </div>
+
+            <div class="info-card">
+              <h3>✉️ Contact Form</h3>
+              <form onsubmit="event.preventDefault(); alert('Thank you! Your message has been sent.'); this.reset();">
+                <div class="form-group">
+                  <label>Your Name</label>
+                  <input type="text" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                  <label>Email Address</label>
+                  <input type="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+                  <label>Message</label>
+                  <input type="text" placeholder="Enter your query or request" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Send Message</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- App Footer -->
+      <footer class="app-footer">
+        Student Event-Management System | Built with HTML5, CSS3, Vanilla JS, Java, JDBC & MySQL
+      </footer>
+    </main>
+  </div>
+
+  <!-- MODAL 1: STUDENT MODAL -->
+  <div class="modal-overlay" id="studentModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="studentModalTitle">Add New Student</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="studentForm">
+        <div class="modal-body">
+          <input type="hidden" id="studentId">
+          
+          <div class="form-group">
+            <label for="studentName">Student Name *</label>
+            <input type="text" id="studentName" placeholder="e.g. Alex Morgan">
+            <div class="error-message">Student Name is required</div>
+          </div>
+
+          <div class="form-group">
+            <label for="registerNumber">Register Number *</label>
+            <input type="text" id="registerNumber" placeholder="e.g. 21CS001">
+            <div class="error-message">Register Number is required</div>
+          </div>
+
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number (10 Digits) *</label>
+            <input type="text" id="phoneNumber" maxlength="10" placeholder="e.g. 9876543210">
+            <div class="error-message">Phone Number must be exactly 10 digits</div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" placeholder="e.g. alex.morgan@college.edu">
+            <div class="error-message">Valid email address is required</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary close-modal-btn">Cancel</button>
+          <button type="submit" class="btn-primary">Save Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: EVENT MODAL -->
+  <div class="modal-overlay" id="eventModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="eventModalTitle">Add Event Record</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="eventForm">
+        <div class="modal-body">
+          <input type="hidden" id="eventId">
+
+          <div class="form-group">
+            <label for="eventStudentReg">Select Student Register Number *</label>
+            <select id="eventStudentReg">
+              <!-- Options populated dynamically -->
+            </select>
+            <div class="error-message">Student Register Number is required</div>
+          </div>
+
+          <div class="form-group">
+            <label for="eventStudentName">Student Name</label>
+            <input type="text" id="eventStudentName" readonly style="background:#f1f5f9; cursor:not-allowed;">
+          </div>
+
+          <div class="form-group">
+            <label for="eventName">Event Name *</label>
+            <input type="text" id="eventName" placeholder="e.g. National Hackathon 2026">
+            <div class="error-message">Event Name is required</div>
+          </div>
+
+          <div class="form-group">
+            <label for="eventDate">Date of the Event *</label>
+            <input type="date" id="eventDate">
+            <div class="error-message">Event Date is required</div>
+          </div>
+
+          <div class="form-group">
+            <label for="eventPlace">Place of the Event *</label>
+            <input type="text" id="eventPlace" placeholder="e.g. Auditorium Hall A">
+            <div class="error-message">Event Place is required</div>
+          </div>
+
+          <div class="form-group">
+            <label for="prizeWon">Prize Won *</label>
+            <select id="prizeWon">
+              <option value="">-- Select Prize Won --</option>
+              <option value="1st Prize">1st Prize</option>
+              <option value="2nd Prize">2nd Prize</option>
+              <option value="3rd Prize">3rd Prize</option>
+              <option value="Participation">Participation</option>
+            </select>
+            <div class="error-message">Please select a valid prize option</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary close-modal-btn">Cancel</button>
+          <button type="submit" class="btn-primary">Save Event Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: DELETE CONFIRMATION -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-container" style="max-width: 420px;">
+      <div class="modal-header" style="background: var(--danger);">
+        <h3>Confirm Deletion</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="deleteConfirmText">Are you sure you want to delete this record?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary close-modal-btn">Cancel</button>
+        <button type="button" class="btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="js/script.js"></script>
+</body>
+</html>

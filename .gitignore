@@ -1,0 +1,9 @@
+# Compiled Java class files
+*.class
+
+# Build and IDE directories
+bin/
+build/
+.idea/
+.vscode/
+*.log
